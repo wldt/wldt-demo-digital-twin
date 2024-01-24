@@ -7,7 +7,7 @@ import it.wldt.adapter.physical.event.PhysicalAssetEventWldtEvent;
 import it.wldt.adapter.physical.event.PhysicalAssetPropertyWldtEvent;
 import it.wldt.adapter.physical.event.PhysicalAssetRelationshipInstanceCreatedWldtEvent;
 import it.wldt.adapter.physical.event.PhysicalAssetRelationshipInstanceDeletedWldtEvent;
-import it.wldt.core.model.ShadowingModelFunction;
+import it.wldt.core.model.ShadowingFunction;
 import it.wldt.core.state.*;
 
 import java.util.Map;
@@ -18,7 +18,7 @@ import java.util.Map;
  * Date: 01/09/2023
  * Project: White Label Digital Twin Java Framework - (whitelabel-digitaltwin)
  */
-public class DemoShadowingFunction extends ShadowingModelFunction {
+public class DemoShadowingFunction extends ShadowingFunction {
 
     public DemoShadowingFunction(String id) {
         super(id);
@@ -56,7 +56,7 @@ public class DemoShadowingFunction extends ShadowingModelFunction {
                     try {
 
                         //Create and write the property on the DT's State
-                        this.digitalTwinState.createProperty(new DigitalTwinStateProperty<>(property.getKey(),(Double) property.getInitialValue()));
+                        this.digitalTwinStateManager.createProperty(new DigitalTwinStateProperty<>(property.getKey(),(Double) property.getInitialValue()));
 
                         //Start observing the variation of the physical property in order to receive notifications
                         //Without this call the Shadowing Function will not receive any notifications or callback about
@@ -106,7 +106,7 @@ public class DemoShadowingFunction extends ShadowingModelFunction {
                         DigitalTwinStateEvent dtStateEvent = new DigitalTwinStateEvent(event.getKey(), event.getType());
 
                         //Create and write the event on the DT's State
-                        this.digitalTwinState.registerEvent(dtStateEvent);
+                        this.digitalTwinStateManager.registerEvent(dtStateEvent);
 
                         //Start observing the variation of the physical event in order to receive notifications
                         //Without this call the Shadowing Function will not receive any notifications or callback about
@@ -128,7 +128,7 @@ public class DemoShadowingFunction extends ShadowingModelFunction {
                         DigitalTwinStateAction dtStateAction = new DigitalTwinStateAction(action.getKey(), action.getType(), action.getContentType());
 
                         //Enable the action on the DT's State
-                        this.digitalTwinState.enableAction(dtStateAction);
+                        this.digitalTwinStateManager.enableAction(dtStateAction);
 
                         System.out.println("[TestShadowingFunction] -> onDigitalTwinBound() -> Action Enabled:" + action.getKey());
 
@@ -143,7 +143,7 @@ public class DemoShadowingFunction extends ShadowingModelFunction {
 
                             DigitalTwinStateRelationship<String> insideInDtStateRelationship = new DigitalTwinStateRelationship<>(relationship.getName(), relationship.getName());
 
-                            this.digitalTwinState.createRelationship(insideInDtStateRelationship);
+                            this.digitalTwinStateManager.createRelationship(insideInDtStateRelationship);
 
                             observePhysicalAssetRelationship(relationship);
 
@@ -189,7 +189,7 @@ public class DemoShadowingFunction extends ShadowingModelFunction {
 
             System.out.println("[TestShadowingFunction] -> onPhysicalAssetPropertyVariation() -> Variation on Property :" + physicalAssetPropertyWldtEvent.getPhysicalPropertyId());
 
-            this.digitalTwinState.updateProperty(new DigitalTwinStateProperty<>(
+            this.digitalTwinStateManager.updateProperty(new DigitalTwinStateProperty<>(
                     physicalAssetPropertyWldtEvent.getPhysicalPropertyId(),
                     physicalAssetPropertyWldtEvent.getBody()));
 
@@ -209,7 +209,7 @@ public class DemoShadowingFunction extends ShadowingModelFunction {
 
             System.out.println("[TestShadowingFunction] -> onPhysicalAssetPropertyVariation() -> Notification for Event :" + physicalAssetEventWldtEvent.getPhysicalEventKey());
 
-            this.digitalTwinState.notifyDigitalTwinStateEvent(new DigitalTwinStateEventNotification<>(
+            this.digitalTwinStateManager.notifyDigitalTwinStateEvent(new DigitalTwinStateEventNotification<>(
                     physicalAssetEventWldtEvent.getPhysicalEventKey(),
                     physicalAssetEventWldtEvent.getBody(),
                     physicalAssetEventWldtEvent.getCreationTimestamp()));
@@ -240,7 +240,7 @@ public class DemoShadowingFunction extends ShadowingModelFunction {
 
                     DigitalTwinStateRelationshipInstance<String> instance = new DigitalTwinStateRelationshipInstance<String>(relName, relTargetId, relKey);
 
-                    this.digitalTwinState.addRelationshipInstance(relName, instance);
+                    this.digitalTwinStateManager.addRelationshipInstance(instance);
                 }
             }
         }catch (Exception e){

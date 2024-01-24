@@ -4,6 +4,7 @@ import it.wldt.adapter.digital.DigitalAdapter;
 import it.wldt.core.state.*;
 import it.wldt.exception.EventBusException;
 
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.stream.Collectors;
 
@@ -16,7 +17,7 @@ import java.util.stream.Collectors;
 public class DemoDigitalAdapter extends DigitalAdapter<Void> {
 
     public DemoDigitalAdapter(String id) {
-        super(id, true);
+        super(id);
     }
 
     /**
@@ -36,131 +37,15 @@ public class DemoDigitalAdapter extends DigitalAdapter<Void> {
     }
 
     /**
-     * Notification about a variation on the DT State with a new Property Created (passed as Parameter)
-     * @param digitalTwinStateProperty
-     */
-    @Override
-    protected void onStateChangePropertyCreated(DigitalTwinStateProperty digitalTwinStateProperty) {
-        System.out.println("[DemoDigitalAdapter] -> onStateChangePropertyCreated(): " + digitalTwinStateProperty);
-    }
-
-    /**
-     * Notification about a variation on the DT State with an existing Property updated in terms of description (passed as Parameter)
-     * @param digitalTwinStateProperty
-     */
-    @Override
-    protected void onStateChangePropertyUpdated(DigitalTwinStateProperty digitalTwinStateProperty) {
-        System.out.println("[DemoDigitalAdapter] -> onStateChangePropertyUpdated(): " + digitalTwinStateProperty);
-    }
-
-    /**
-     * Notification about a variation on the DT State with an existing Property Deleted (passed as Parameter)
-     * @param digitalTwinStateProperty
-     */
-    @Override
-    protected void onStateChangePropertyDeleted(DigitalTwinStateProperty digitalTwinStateProperty) {
-        System.out.println("[DemoDigitalAdapter] -> onStateChangePropertyDeleted(): " + digitalTwinStateProperty);
-    }
-
-    /**
-     * Notification about a variation on the DT State with an existing Property's value updated (passed as Parameter)
-     * @param digitalTwinStateProperty
-     */
-    @Override
-    protected void onStatePropertyUpdated(DigitalTwinStateProperty digitalTwinStateProperty) {
-        System.out.println("[DemoDigitalAdapter] -> onStatePropertyUpdated(): " + digitalTwinStateProperty);
-    }
-
-    /**
-     * Notification about a variation on the DT State with an existing Property Deleted (passed as Parameter)
-     * @param digitalTwinStateProperty
-     */
-    @Override
-    protected void onStatePropertyDeleted(DigitalTwinStateProperty digitalTwinStateProperty) {
-        System.out.println("[DemoDigitalAdapter] -> onStatePropertyDeleted(): " + digitalTwinStateProperty);
-    }
-
-    /**
-     * Notification of a new Action Enabled on the DT State
-     * @param digitalTwinStateAction
-     */
-    @Override
-    protected void onStateChangeActionEnabled(DigitalTwinStateAction digitalTwinStateAction) {
-        System.out.println("[DemoDigitalAdapter] -> onStateChangeActionEnabled(): " + digitalTwinStateAction);
-    }
-
-    /**
-     * Notification of an update associated to an existing Digital Action
-     * @param digitalTwinStateAction
-     */
-    @Override
-    protected void onStateChangeActionUpdated(DigitalTwinStateAction digitalTwinStateAction) {
-        System.out.println("[DemoDigitalAdapter] -> onStateChangeActionUpdated(): " + digitalTwinStateAction);
-    }
-
-    /**
-     * Notification of Digital Action that has been disabled
-     * @param digitalTwinStateAction
-     */
-    @Override
-    protected void onStateChangeActionDisabled(DigitalTwinStateAction digitalTwinStateAction) {
-        System.out.println("[DemoDigitalAdapter] -> onStateChangeActionDisabled(): " + digitalTwinStateAction);
-    }
-
-    /**
-     * Notification that a new Event has been registered of the DT State
-     * @param digitalTwinStateEvent
-     */
-    @Override
-    protected void onStateChangeEventRegistered(DigitalTwinStateEvent digitalTwinStateEvent) {
-        System.out.println("[DemoDigitalAdapter] -> onStateChangeEventRegistered(): " + digitalTwinStateEvent);
-    }
-
-    /**
-     * Notification that an existing Event has been updated of the DT State in terms of description
-     * @param digitalTwinStateEvent
-     */
-    @Override
-    protected void onStateChangeEventRegistrationUpdated(DigitalTwinStateEvent digitalTwinStateEvent) {
-        System.out.println("[DemoDigitalAdapter] -> onStateChangeEventRegistrationUpdated(): " + digitalTwinStateEvent);
-    }
-
-    /**
-     * Notification that an existing Event has been removed from the DT State
-     * @param digitalTwinStateEvent
-     */
-    @Override
-    protected void onStateChangeEventUnregistered(DigitalTwinStateEvent digitalTwinStateEvent) {
-        System.out.println("[DemoDigitalAdapter] -> onStateChangeEventUnregistered(): " + digitalTwinStateEvent);
-    }
-
-    /**
      * DT Life Cycle notification that the DT is correctly on Sync
      * @param currentDigitalTwinState
      */
     @Override
-    public void onDigitalTwinSync(IDigitalTwinState currentDigitalTwinState) {
+    public void onDigitalTwinSync(DigitalTwinState currentDigitalTwinState) {
 
         System.out.println("[DemoDigitalAdapter] -> onDigitalTwinSync(): " + currentDigitalTwinState);
 
         try {
-
-            //Observer all properties
-            //observeDigitalTwinStateProperties();
-
-            //Observe only a list of target properties
-            /*
-            digitalTwinState.getPropertyList().map(eventList -> eventList.stream()
-                            .map(DigitalTwinStateProperty::getKey)
-                            .collect(Collectors.toList()))
-                    .ifPresent(propertyKeys -> {
-                        try {
-                            observeTargetDigitalTwinProperties(propertyKeys);
-                        } catch (EventBusException e) {
-                            e.printStackTrace();
-                        }
-                    });
-            */
 
             digitalTwinState.getEventList()
                     .map(eventList -> eventList.stream()
@@ -168,7 +53,7 @@ public class DemoDigitalAdapter extends DigitalAdapter<Void> {
                             .collect(Collectors.toList()))
                     .ifPresent(eventKeys -> {
                         try {
-                            observeDigitalTwinEventsNotifications(eventKeys);
+                            this.observeDigitalTwinEventsNotifications(eventKeys);
                         } catch (EventBusException e) {
                             e.printStackTrace();
                         }
@@ -188,7 +73,7 @@ public class DemoDigitalAdapter extends DigitalAdapter<Void> {
      * @param currentDigitalTwinState
      */
     @Override
-    public void onDigitalTwinUnSync(IDigitalTwinState currentDigitalTwinState) {
+    public void onDigitalTwinUnSync(DigitalTwinState currentDigitalTwinState) {
         System.out.println("[DemoDigitalAdapter] -> onDigitalTwinUnSync(): " + currentDigitalTwinState);
     }
 
@@ -225,48 +110,71 @@ public class DemoDigitalAdapter extends DigitalAdapter<Void> {
     }
 
     /**
-     * Notification that an existing Relationships Instance has been removed
-     * @param digitalTwinStateRelationshipInstance
+     * Callback method allowing the Digital Adapter to receive the updated Digital Twin State together with
+     * the previous state and the list of applied changes
+     *
+     * @param newDigitalTwinState The new Digital Twin State computed by the Shadowing Function
+     * @param previousDigitalTwinState The previous Digital Twin State
+     * @param digitalTwinStateChangeList The list of applied changes to compute the new Digital Twin State
      */
     @Override
-    protected void onStateChangeRelationshipInstanceDeleted(DigitalTwinStateRelationshipInstance digitalTwinStateRelationshipInstance) {
-        System.out.println("[DemoDigitalAdapter] -> onStateChangeRelationshipInstanceDeleted(): " + digitalTwinStateRelationshipInstance);
+    protected void onStateUpdate(DigitalTwinState newDigitalTwinState, DigitalTwinState previousDigitalTwinState, ArrayList<DigitalTwinStateChange> digitalTwinStateChangeList) {
+
+        // In newDigitalTwinState we have the new DT State
+        System.out.println("New DT State is: " + newDigitalTwinState);
+
+        // The previous DT State is available through the variable previousDigitalTwinState
+        System.out.println("Previous DT State is: " + previousDigitalTwinState);
+
+        // We can also check each DT's state change potentially differentiating the behaviour for each change
+        if (digitalTwinStateChangeList != null && !digitalTwinStateChangeList.isEmpty()) {
+
+            // Iterate through each state change in the list
+            for (DigitalTwinStateChange stateChange : digitalTwinStateChangeList) {
+
+                // Get information from the state change
+                DigitalTwinStateChange.Operation operation = stateChange.getOperation();
+                DigitalTwinStateChange.ResourceType resourceType = stateChange.getResourceType();
+                DigitalTwinStateResource resource = stateChange.getResource();
+
+                // Perform different actions based on the type of operation
+                switch (operation) {
+                    case OPERATION_UPDATE:
+                        // Handle an update operation
+                        System.out.println("Update operation on " + resourceType + ": " + resource);
+                        break;
+                    case OPERATION_UPDATE_VALUE:
+                        // Handle an update value operation
+                        System.out.println("Update value operation on " + resourceType + ": " + resource);
+                        break;
+                    case OPERATION_ADD:
+                        // Handle an add operation
+                        System.out.println("Add operation on " + resourceType + ": " + resource);
+                        break;
+                    case OPERATION_REMOVE:
+                        // Handle a remove operation
+                        System.out.println("Remove operation on " + resourceType + ": " + resource);
+                        break;
+                    default:
+                        // Handle unknown operation (optional)
+                        System.out.println("Unknown operation on " + resourceType + ": " + resource);
+                        break;
+                }
+            }
+        } else {
+            // No state changes
+            System.out.println("No state changes detected.");
+        }
     }
 
     /**
-     * Notification that an existing Relationship has been removed from the DT State
-     * @param digitalTwinStateRelationship
+     * Callback method to receive a new computed Event Notification (associated to event declared in the DT State)
+     *
+     * @param digitalTwinStateEventNotification The generated Notification associated to a DT Event
      */
     @Override
-    protected void onStateChangeRelationshipDeleted(DigitalTwinStateRelationship digitalTwinStateRelationship) {
-        System.out.println("[DemoDigitalAdapter] -> onStateChangeRelationshipDeleted(): " + digitalTwinStateRelationship);
-    }
-
-    /**
-     * Notification that a new Relationship Instance has been created on the DT State
-     * @param digitalTwinStateRelationshipInstance
-     */
-    @Override
-    protected void onStateChangeRelationshipInstanceCreated(DigitalTwinStateRelationshipInstance digitalTwinStateRelationshipInstance) {
-        System.out.println("[DemoDigitalAdapter] -> onStateChangeRelationshipInstanceCreated(): " + digitalTwinStateRelationshipInstance);
-    }
-
-    /**
-     * Notification that a new Relationship has been created on the DT State
-     * @param digitalTwinStateRelationship
-     */
-    @Override
-    protected void onStateChangeRelationshipCreated(DigitalTwinStateRelationship digitalTwinStateRelationship) {
-        System.out.println("[DemoDigitalAdapter] -> onStateChangeRelationshipCreated(): " + digitalTwinStateRelationship);
-    }
-
-    /**
-     * Notification that a Notification for ta specific Event has been received
-     * @param digitalTwinStateEventNotification
-     */
-    @Override
-    protected void onDigitalTwinStateEventNotificationReceived(DigitalTwinStateEventNotification digitalTwinStateEventNotification) {
-        System.out.println("[DemoDigitalAdapter] -> onDigitalTwinStateEventNotificationReceived(): " + digitalTwinStateEventNotification);
+    protected void onEventNotificationReceived(DigitalTwinStateEventNotification<?> digitalTwinStateEventNotification) {
+        System.out.println("[DemoDigitalAdapter] -> Received Event Notification: " + digitalTwinStateEventNotification);
     }
 
     private Runnable emulateIncomingDigitalAction(){
