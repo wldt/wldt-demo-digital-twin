@@ -160,6 +160,10 @@ public class DemoDigitalAdapter extends DigitalAdapter<Void> {
                         System.out.println("Unknown operation on " + resourceType + ": " + resource);
                         break;
                 }
+
+                // Specific log example for Relationships Instance Variation
+                if(resourceType.equals(DigitalTwinStateChange.ResourceType.RELATIONSHIP_INSTANCE))
+                    System.out.println("New Relationship Instance operation:" + operation + " Resource:" + resource);
             }
         } else {
             // No state changes

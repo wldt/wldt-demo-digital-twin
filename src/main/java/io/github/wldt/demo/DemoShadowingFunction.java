@@ -1,5 +1,7 @@
 package io.github.wldt.demo;
 
+import io.github.wldt.demo.physical.DemoPhysicalAdapter;
+import io.github.wldt.demo.utils.GlobalKeywords;
 import it.wldt.adapter.digital.event.DigitalActionWldtEvent;
 import it.wldt.adapter.physical.PhysicalAssetDescription;
 import it.wldt.adapter.physical.PhysicalAssetRelationshipInstance;
@@ -142,7 +144,7 @@ public class DemoShadowingFunction extends ShadowingFunction {
 
                 pad.getRelationships().forEach(relationship -> {
                     try{
-                        if(relationship != null && relationship.getName().equals("insideIn")){
+                        if(relationship != null && relationship.getName().equals(GlobalKeywords.INSIDE_IN_RELATIONSHIP)){
 
                             DigitalTwinStateRelationship<String> insideInDtStateRelationship = new DigitalTwinStateRelationship<>(relationship.getName(), relationship.getName());
 
@@ -253,7 +255,14 @@ public class DemoShadowingFunction extends ShadowingFunction {
 
                     DigitalTwinStateRelationshipInstance<String> instance = new DigitalTwinStateRelationshipInstance<String>(relName, relTargetId, relKey);
 
+                    //Update Digital Twin State
+                    //NEW from 0.3.0 -> Start State Transaction
+                    this.digitalTwinStateManager.startStateTransaction();
+
                     this.digitalTwinStateManager.addRelationshipInstance(instance);
+
+                    //NEW from 0.3.0 -> Commit State Transaction
+                    this.digitalTwinStateManager.commitStateTransaction();
                 }
             }
         }catch (Exception e){
