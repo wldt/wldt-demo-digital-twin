@@ -50,6 +50,9 @@ public class DemoShadowingFunction extends ShadowingFunction {
 
             System.out.println("[TestShadowingFunction] -> onDigitalTwinBound(): " + adaptersPhysicalAssetDescriptionMap);
 
+            // NEW in 0.3.0 -> Start DT State Change Transaction
+            this.digitalTwinStateManager.startStateTransaction();
+
             //Iterate over all the received PAD from connected Physical Adapters
             adaptersPhysicalAssetDescriptionMap.values().forEach(pad -> {
                 pad.getProperties().forEach(property -> {
@@ -156,6 +159,9 @@ public class DemoShadowingFunction extends ShadowingFunction {
 
             });
 
+            // NEW in 0.3.0 -> Commit DT State Change Transaction to apply the changes on the DT State and notify about the change
+            this.digitalTwinStateManager.commitStateTransaction();
+
             //Start observation to receive all incoming Digital Action through active Digital Adapter
             //Without this call the Shadowing Function will not receive any notifications or callback about
             //incoming request to execute an exposed DT's Action
@@ -189,9 +195,16 @@ public class DemoShadowingFunction extends ShadowingFunction {
 
             System.out.println("[TestShadowingFunction] -> onPhysicalAssetPropertyVariation() -> Variation on Property :" + physicalAssetPropertyWldtEvent.getPhysicalPropertyId());
 
+            //Update Digital Twin State
+            //NEW from 0.3.0 -> Start State Transaction
+            this.digitalTwinStateManager.startStateTransaction();
+
             this.digitalTwinStateManager.updateProperty(new DigitalTwinStateProperty<>(
                     physicalAssetPropertyWldtEvent.getPhysicalPropertyId(),
                     physicalAssetPropertyWldtEvent.getBody()));
+
+            //NEW from 0.3.0 -> Commit State Transaction
+            this.digitalTwinStateManager.commitStateTransaction();
 
             System.out.println("[TestShadowingFunction] -> onPhysicalAssetPropertyVariation() -> DT State UPDATE Property :" + physicalAssetPropertyWldtEvent.getPhysicalPropertyId());
 

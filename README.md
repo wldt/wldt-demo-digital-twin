@@ -18,7 +18,7 @@ in the``<dependencies></dependencies>`` tag using the following snippet:
 <dependency>
     <groupId>io.github.wldt</groupId>
     <artifactId>wldt-core</artifactId>
-    <version>0.2.1</version>
+    <version>0.3.0</version>
 </dependency>
 ```
 
