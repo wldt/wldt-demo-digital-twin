@@ -1,6 +1,5 @@
 package io.github.wldt.demo;
 
-import io.github.wldt.demo.physical.DemoPhysicalAdapter;
 import io.github.wldt.demo.utils.GlobalKeywords;
 import it.wldt.adapter.digital.event.DigitalActionWldtEvent;
 import it.wldt.adapter.physical.PhysicalAssetDescription;

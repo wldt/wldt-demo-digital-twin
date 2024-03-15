@@ -1,11 +1,9 @@
 package io.github.wldt.demo;
 
 import io.github.wldt.demo.digital.DemoConfDigitalAdapter;
-import io.github.wldt.demo.digital.DemoDigitalAdapter;
 import io.github.wldt.demo.digital.DemoDigitalAdapterConfiguration;
 import io.github.wldt.demo.logger.DemoEventLogger;
 import io.github.wldt.demo.physical.DemoConfPhysicalAdapter;
-import io.github.wldt.demo.physical.DemoPhysicalAdapter;
 import io.github.wldt.demo.physical.DemoPhysicalAdapterConfiguration;
 import it.wldt.core.engine.DigitalTwin;
 import it.wldt.core.engine.DigitalTwinEngine;

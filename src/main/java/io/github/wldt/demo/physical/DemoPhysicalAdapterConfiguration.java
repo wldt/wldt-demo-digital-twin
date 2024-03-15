@@ -12,7 +12,6 @@ public class DemoPhysicalAdapterConfiguration {
 
     private double temperatureMaxValue = GlobalKeywords.TEMPERATURE_MAX_VALUE;
 
-
     public DemoPhysicalAdapterConfiguration() {
     }
 
