@@ -1,20 +1,16 @@
 package io.github.wldt.demo.physical;
 
+import io.github.wldt.demo.utils.GlobalKeywords;
+
 public class DemoPhysicalAdapterConfiguration {
 
-    private final static int MESSAGE_UPDATE_TIME = 1000;
-    private final static int MESSAGE_UPDATE_NUMBER = 10;
-    private final static double TEMPERATURE_MIN_VALUE = 20;
-    private final static double TEMPERATURE_MAX_VALUE = 30;
+    private int messageUpdateTime = GlobalKeywords.MESSAGE_UPDATE_TIME;
 
-    private int messageUpdateTime = MESSAGE_UPDATE_TIME;
+    private int messageUpdateNumber = GlobalKeywords.MESSAGE_UPDATE_NUMBER;
 
-    private int messageUpdateNumber = MESSAGE_UPDATE_NUMBER;
+    private double temperatureMinValue = GlobalKeywords.TEMPERATURE_MIN_VALUE;
 
-    private double temperatureMinValue = TEMPERATURE_MIN_VALUE;
-
-    private double temperatureMaxValue = TEMPERATURE_MAX_VALUE;
-
+    private double temperatureMaxValue = GlobalKeywords.TEMPERATURE_MAX_VALUE;
 
     public DemoPhysicalAdapterConfiguration() {
     }

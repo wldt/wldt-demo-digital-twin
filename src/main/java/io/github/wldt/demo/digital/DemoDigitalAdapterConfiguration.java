@@ -1,22 +1,16 @@
 package io.github.wldt.demo.digital;
 
+import io.github.wldt.demo.utils.GlobalKeywords;
+
 public class DemoDigitalAdapterConfiguration {
 
-    private static final int SLEEP_TIME_MS = 1000;
+    private int sleepTimeMs = GlobalKeywords.ACTION_SLEEP_TIME_MS;
 
-    private static final int EMULATED_ACTION_COUNT = 5;
+    private int emulatedActionCount = GlobalKeywords.EMULATED_ACTION_COUNT;
 
-    private final static double TEMPERATURE_MIN_VALUE = 20;
+    private double temperatureMinValue = GlobalKeywords.TEMPERATURE_MIN_VALUE;
 
-    private final static double TEMPERATURE_MAX_VALUE = 30;
-
-    private int sleepTimeMs = SLEEP_TIME_MS;
-
-    private int emulatedActionCount = EMULATED_ACTION_COUNT;
-
-    private double temperatureMinValue = TEMPERATURE_MIN_VALUE;
-
-    private double temperatureMaxValue = TEMPERATURE_MAX_VALUE;
+    private double temperatureMaxValue = GlobalKeywords.TEMPERATURE_MAX_VALUE;
 
     public DemoDigitalAdapterConfiguration() {
     }
