@@ -514,7 +514,7 @@ protected void onDigitalTwinBound(Map<String, PhysicalAssetDescription> adapters
 
     try{
 
-              // NEW from 0.3.0 -> Start DT State Change Transaction
+        // NEW from 0.3.0 -> Start DT State Change Transaction
         this.digitalTwinStateManager.startStateTransaction();
 
         //Iterate over all the received PAD from connected Physical Adapters
