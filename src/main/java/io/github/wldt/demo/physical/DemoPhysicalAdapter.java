@@ -94,7 +94,7 @@ public class DemoPhysicalAdapter extends PhysicalAdapter {
                 pad.getActions().add(setTemperatureAction);
 
                 //Create Test Relationship to describe that the Physical Device is inside a building
-                this.insideInRelationship = new PhysicalAssetRelationship<>(GlobalKeywords.INSIDE_IN_RELATIONSHIP);
+                this.insideInRelationship = new PhysicalAssetRelationship<>(GlobalKeywords.INSIDE_IN_RELATIONSHIP_NAME, GlobalKeywords.INSIDE_IN_RELATIONSHIP_TYPE);
                 pad.getRelationships().add(insideInRelationship);
 
                 //Notify the new PAD to the DT's Shadowing Function

@@ -143,7 +143,7 @@ public class DemoShadowingFunction extends ShadowingFunction {
 
                 pad.getRelationships().forEach(relationship -> {
                     try{
-                        if(relationship != null && relationship.getName().equals(GlobalKeywords.INSIDE_IN_RELATIONSHIP)){
+                        if(relationship != null && relationship.getName().equals(GlobalKeywords.INSIDE_IN_RELATIONSHIP_NAME)){
 
                             DigitalTwinStateRelationship<String> insideInDtStateRelationship = new DigitalTwinStateRelationship<>(relationship.getName(), relationship.getName());
 
