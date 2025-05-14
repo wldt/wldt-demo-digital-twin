@@ -514,25 +514,22 @@ protected void onDigitalTwinBound(Map<String, PhysicalAssetDescription> adapters
 
     try{
 
-      // NEW from 0.3.0 -> Start DT State Change Transaction  
-      this.digitalTwinStateManager.startStateTransaction();
+              // NEW from 0.3.0 -> Start DT State Change Transaction
+        this.digitalTwinStateManager.startStateTransaction();
 
-      //Iterate over all the received PAD from connected Physical Adapters
+        //Iterate over all the received PAD from connected Physical Adapters
         adaptersPhysicalAssetDescriptionMap.values().forEach(pad -> {
-
-            //Iterate over all the received PAD from connected Physical Adapters
-            adaptersPhysicalAssetDescriptionMap.values().forEach(pad -> {
-                pad.getProperties().forEach(property -> {
+            pad.getProperties().forEach(property -> {
                 try {
-                    
+
                     //Create and write the property on the DT's State
-                    this.digitalTwinState.createProperty(new DigitalTwinStateProperty<>(property.getKey(),(Double) property.getInitialValue()));
-            
+                    this.digitalTwinStateManager.createProperty(new DigitalTwinStateProperty<>(property.getKey(), (Double) property.getInitialValue()));
+
                     //Start observing the variation of the physical property in order to receive notifications
                     //Without this call the Shadowing Function will not receive any notifications or callback about
                     //incoming physical property of the target type and with the target key
                     this.observePhysicalAssetProperty(property);
-        
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -546,7 +543,7 @@ protected void onDigitalTwinBound(Map<String, PhysicalAssetDescription> adapters
                     DigitalTwinStateEvent dtStateEvent = new DigitalTwinStateEvent(event.getKey(), event.getType());
 
                     //Create and write the event on the DT's State
-                    this.digitalTwinState.registerEvent(dtStateEvent);
+                    this.digitalTwinStateManager.registerEvent(dtStateEvent);
 
                     //Start observing the variation of the physical event in order to receive notifications
                     //Without this call the Shadowing Function will not receive any notifications or callback about
@@ -566,7 +563,7 @@ protected void onDigitalTwinBound(Map<String, PhysicalAssetDescription> adapters
                     DigitalTwinStateAction dtStateAction = new DigitalTwinStateAction(action.getKey(), action.getType(), action.getContentType());
 
                     //Enable the action on the DT's State
-                    this.digitalTwinState.enableAction(dtStateAction);
+                    this.digitalTwinStateManager.enableAction(dtStateAction);
 
                 } catch (Exception e) {
                     e.printStackTrace();
